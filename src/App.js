@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {
   makeErrors,
@@ -7,7 +7,6 @@ import {
   extractData,
 } from './Functions/ErrorHandling';
 import { CSVLink } from 'react-csv';
-const { useState, useEffect } = React;
 
 function App() {
   const [users, setUsers] = useState(null);
@@ -15,7 +14,7 @@ function App() {
   const [region, setRegion] = useState('');
   const [seed, setSeed] = useState('20');
 
-  async function getAPI(regionField, seedField, errorField, scrolled) {
+  const getAPI = useCallback(async(regionField, seedField, errorField, scrolled) => {
     const fetchedData = await fetch(
       `https://randomuser.me/api/?results=${seedField}&inc=name,location,phone&nat=${regionField}`
     );
@@ -34,13 +33,13 @@ function App() {
       setUsers(usersWithErrors);
       return usersWithErrors;
     }
-  }
+  }, [])
 
   useEffect(() => {
     if (region !== '') {
-      getAPI(region, '20', errors);
+      getAPI(region, '20', errors)
     }
-  }, [errors, region]);
+  }, [getAPI, region, errors]);
 
   function indexUsers(data) {
     let indexedData = data.map((user, index) =>

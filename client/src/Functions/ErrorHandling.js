@@ -52,7 +52,6 @@ function swapCharacter(string, index) {
 }
 
 function addCharacter(string, index) {
-  console.log(string, index);
   let allLetters = getLetters();
   let letterToAdd = allLetters[randomNumber(allLetters.length)];
   const temp = Array.from(string);
@@ -82,11 +81,8 @@ export function extractData(array) {
       country: element.location.country,
       state: element.location.state,
       city: element.location.city,
-      postcode: element.location.postcode,
-      number: element.location.street.number,
-      name: element.location.street.name,
-      first: element.name.first,
-      last: element.name.last,
+      address:`${element.location.postcode} ${element.location.street.number} ${element.location.street.name}`,
+      name: `${element.name.first} ${element.name.last}`,
       title: element.name.title,
     };
   });
